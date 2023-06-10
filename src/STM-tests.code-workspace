@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "open-espresso",
+			"path": "../../open-espresso"
+		}
+	],
+	"settings": {}
+}

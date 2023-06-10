@@ -79,7 +79,7 @@ class EasyNex {
 
 	public:
     EasyNex(HardwareSerial& serial);
-		void begin(unsigned long baud = 9600);
+		void begin(unsigned long baud = 115200);
     void writeNum(String, uint32_t);
     void writeStr(String, String txt = "cmd");
 		void NextionListen(void);

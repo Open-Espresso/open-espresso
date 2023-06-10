@@ -2,8 +2,17 @@
 #define OPENESPRESSO_H
 
 #include <Arduino.h>
-#include <max6675.h>
 #include "EasyNextionLibrary.h"
+
+#define PCB
+
+#if defined PCB
+#include <Wire.h>
+#include <Adafruit_MAX31855.h>
+#else
+#include <max6675.h>
+#endif
+
 
 
 extern int steam_mode;
@@ -29,15 +38,30 @@ void displayMessage(String message, int min_duration);
 
 #endif // OPENESPRESSO_H
 
-#define LEGO
-
 #ifdef LEGO
-
-#define SO_MAIN PB4
-#define CS_MAIN PA6
-#define CLK_MAIN PA5
-#define BOILER_SSR PA15
-#define PUMP_DIMMER PA1
-#define SOLONOID PC13
-
+#define SO_MAIN         PB4
+#define CS_MAIN         PA6
+#define CLK_MAIN        PA5
+#define BOILER_SSR      PA15
+#define PUMP_DIMMER     PA1
+#define SOLONOID        PC13
+#define ZC_PIN          PA0
 #endif
+
+#ifdef PCB
+#define SO_MAIN         PB4
+#define CS_MAIN         PA6
+#define CLK_MAIN        PA5
+#define BOILER_SSR      PA15
+#define PUMP_DIMMER     PA1
+#define SOLONOID        PC13
+#define ZC_PIN          PA0
+#endif
+
+// Pressure sensor
+extern void pressureInit(void);
+extern float getPressure(void);
+
+// Run pump
+extern void runPump(void);
+

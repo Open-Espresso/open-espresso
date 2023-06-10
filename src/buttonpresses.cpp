@@ -54,14 +54,18 @@ void trigger7() { // Shoot
 
   if (shooting) {
     shooting = 0;
-    
+
+    detachInterrupt(ZC_PIN); // Stop the zero crossing interrupt
+    analogWrite(PUMP_DIMMER, 0); // Turn off pump
+
+    digitalWrite(SOLONOID, LOW); // Close solonoid
+
     myNex.writeNum("shoot.bco", 42292);
     myNex.writeStr("shoot.txt", "Shoot");
 
-    analogWrite(PUMP_DIMMER, 0); // Turn off pump
-    digitalWrite(SOLONOID, LOW); // Close solonoid
-
     displayMessage("Shot Stopped", 2000);
+
+
 
   } else {
     shooting = 1;
@@ -69,10 +73,11 @@ void trigger7() { // Shoot
     myNex.writeNum("shoot.bco", 63488);
     myNex.writeStr("shoot.txt", "Shooting");
 
-    analogWrite(PUMP_DIMMER, 255); // Turn on pump
     displayMessage("Shot Started", 2000);
     digitalWrite(SOLONOID, HIGH); // Open solonoid
 
+    attachInterrupt(ZC_PIN, runPump, RISING); // Start the zero crossing interrupt
+    //analogWrite(PUMP_DIMMER, 255);
   }
 
   
@@ -91,7 +96,12 @@ void trigger8() { // Steam Mode
     steam_mode = 0;
     myNex.writeNum("steam.bco", 42292);
     myNex.writeStr("steam.txt", "Steam");
-      displayMessage("Steam Mode off", 2000);
+    displayMessage("Steam Mode off", 2000);
+
+    digitalWrite(SOLONOID, HIGH);
+    delay(5000);
+    analogWrite(PUMP_DIMMER, 0); 
+    digitalWrite(SOLONOID, LOW);
 
   } else {
     steam_mode = 1;
