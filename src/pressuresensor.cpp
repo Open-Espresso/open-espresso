@@ -50,33 +50,10 @@ float getPressure() {
 
 
 void getAdsError() {
-  // Reset the hw i2c to try and recover comms
-  // on fail to do so throw error
-  i2cResetState();
 
-  // Throw error code on ADS malfunction/miswiring
-  // Invalid Voltage error code: -100
-  // Invalid gain error code: 255
-  // Invalid mode error code: 254
-  volatile short result = ads.getError();
-  if (result == 0) return;
-  char tmp[25];
-  unsigned int check = snprintf(tmp, sizeof(tmp), "ADS error code: %i", result);
-  if (check > 0 && check <= sizeof(tmp)) {
-    displayMessage(tmp, 2000);
-  }
 }
 
 
 void i2cResetState() {
-  if(digitalRead(hw_SCL) != HIGH || digitalRead(hw_SDA) != HIGH || !ads.isConnected()) {
-    //LOG_INFO("Reset I2C pins");
-    volatile short result = I2C_ClearBus(hw_SDA, hw_SCL);
-    char tmp[25];
-    unsigned int check = snprintf(tmp, sizeof(tmp), "I2C error code: %i", result);
-    if (check > 0 && check <= sizeof(tmp)) {
-      result == 0 ? pressureInit() : displayMessage(tmp, 2000);
-    }
-    delay(50);
-  }
+
 }
